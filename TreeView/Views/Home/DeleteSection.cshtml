@@ -1,0 +1,24 @@
+﻿@model TreeView.Models.Section
+
+@{
+    ViewBag.Title = "Usuwanie kategorii";
+}
+
+<h2>Usuwanie kategorii</h2>
+
+@using (Html.BeginForm("DeleteSection", "Home"))
+{
+    @Html.HiddenFor(x => x.SectionId)
+    <div class="form-group" style="font-size:20px; color:red">
+        Czy chcesz usunąć kategorię?
+
+        <p style="font-size:30px; color:red">
+            @Model.SectionName
+        </p>
+    </div>
+
+    <button type="submit" class="btn btn-danger btn-lg mb-5">
+        Usuń
+    </button>
+
+}

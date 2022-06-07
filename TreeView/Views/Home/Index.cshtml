@@ -1,0 +1,81 @@
+﻿@model List<TreeView.Models.Section>
+
+@helper GetTreeView(List<TreeView.Models.Section> sections, int parentId)
+{
+    foreach (var item in sections.Where(x => x.ParentSecId.Equals(parentId)))
+    {
+        <li>
+            @{ var subMenu = sections.Where(x => x.ParentSecId.Equals(item.SectionId)).Count();}
+            @if (subMenu > 0)
+            {
+                <span class="collapse collapsing">&nbsp;</span>
+            }
+            else
+            {
+                <span style="width: 15px; display: inline-block">&nbsp;</span>
+            }
+            <span>
+                <a href="@item.NavUrl" style="font-size:20px">@item.SectionName</a>
+                <button class="btn btn-primary btn-sm mb-1"
+                        onclick='window.location.href="@Url.Action("SectionPosition", "Home",
+                    new { parentSecId = item.SectionId})"'>
+                    +
+                </button>
+
+            </span>
+
+            @if (subMenu > 0)
+            {
+                <ul>
+                    @GetTreeView(sections, item.SectionId)
+                </ul>
+            }
+            else
+            {
+                <button class="btn btn-danger btn-sm mb-1"
+                        onclick='window.location.href="@Url.Action("DeleteSection", "Home",
+                    new { id = item.SectionId})"'>
+                    -
+                </button>
+            }
+        </li>
+    }
+
+}
+
+@{
+    ViewBag.Title = "Kategorie";
+}
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <h2>Kategorie</h2>
+        <div style="border: solid 1px black; padding: 10px; background-color: #FAFAFA">
+            <div class="treeview">
+
+                @if (Model != null && Model.Count() > 0)
+                {
+                    <ul>
+                        @GetTreeView(Model, Model.FirstOrDefault().ParentSecId)
+                    </ul>
+
+                }
+                <p style="font-size:20px">
+                    Dodaj nową kategorię:
+                    <button class="btn btn-primary btn-sm mb-1"
+                            onclick='window.location.href="@Url.Action("SectionPosition", "Home",
+                    new { parentSecId = 0})"'>
+                        +
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-5 offset-lg-1">
+        <div class="col-5 offset-lg-1">
+           
+        </div>
+    </div>
+
+</div>
+
